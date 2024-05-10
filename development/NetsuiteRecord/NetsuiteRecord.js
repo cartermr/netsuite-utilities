@@ -27,14 +27,34 @@ define(["require", "exports", "./NetsuiteRecordSublist"], function (require, exp
          * @type {string[]}
          */
         #sublists = [];
+        /**
+         * @private
+         * @type {number}
+         */
+        #id;
         /** @type {record} Native SuiteScript record object */
         nsAPI;
         constructor(nsRecord) {
             this.nsAPI = nsRecord;
+            this.#id = this.nsAPI.id;
             this.#fieldList = this.nsAPI.getFields();
             this.#sublists = this.nsAPI.getSublists();
             this.#buildFields();
             this.#buildSublists();
+        }
+        get ID() { return this.#id; }
+        get fields() { return this.#fieldList; }
+        get sublists() { return this.#sublists; }
+        getField(fieldId) { return this.nsAPI.getField({ fieldId: fieldId }); }
+        save(enableSourcing = false, ignoreMandatoryFields = false) {
+            let savedRecID = this.nsAPI.save({ enableSourcing: enableSourcing, ignoreMandatoryFields: ignoreMandatoryFields });
+            if (savedRecID) {
+                this.#id = savedRecID;
+                return savedRecID;
+            }
+            else {
+                return null;
+            }
         }
         /**
          * @private
@@ -46,12 +66,12 @@ define(["require", "exports", "./NetsuiteRecordSublist"], function (require, exp
                     Object.defineProperties(this, {
                         [fieldId]: {
                             get: () => this.nsAPI.getValue({ fieldId: fieldId }),
-                            set: (value) => this.nsAPI.setValue({ fieldId: fieldId, value: value }),
+                            set: (value, ignoreFieldChange = false) => this.nsAPI.setValue({ fieldId: fieldId, value: value, ignoreFieldChange: ignoreFieldChange }),
                             enumerable: true
                         },
                         [`${fieldId}TEXT`]: {
                             get: () => this.nsAPI.getText({ fieldId: fieldId }),
-                            set: (value) => this.nsAPI.setText({ fieldId: fieldId, text: value }),
+                            set: (value, ignoreFieldChange = false) => this.nsAPI.setText({ fieldId: fieldId, text: value, ignoreFieldChange: ignoreFieldChange }),
                             enumerable: true
                         }
                     });
