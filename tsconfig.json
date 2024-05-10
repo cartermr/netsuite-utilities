@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": [
+      "ES2022",
+      "DOM"
+    ],
+    "experimentalDecorators": true,
+    "module": "AMD",
+    "moduleResolution": "Node",
+    "baseUrl": ".",
+    "paths": {
+      "N": ["node_modules/@hitc/netsuite-types/N"],
+      "N/*": ["node_modules/@hitc/netsuite-types/N/*"]
+    },
+    "sourceMap": false,
+    "newLine": "LF",
+    "strict": true,
+    "skipLibCheck": true,
+    "noImplicitAny": false,
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}

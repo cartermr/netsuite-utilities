@@ -1,0 +1,24 @@
+{
+  "name": "netsuite-utilities",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cartermr/netsuite-utilities.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cartermr/netsuite-utilities/issues"
+  },
+  "homepage": "https://github.com/cartermr/netsuite-utilities#readme",
+  "devDependencies": {
+    "@hitc/netsuite-types": "^2024.1.3",
+    "typescript": "^5.4.5"
+  }
+}
