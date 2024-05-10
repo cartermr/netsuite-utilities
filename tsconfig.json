@@ -17,7 +17,7 @@
     "newLine": "LF",
     "strict": true,
     "skipLibCheck": true,
-    "noImplicitAny": false,
+    "noImplicitAny": true,
   },
   "exclude": [
     "node_modules"
