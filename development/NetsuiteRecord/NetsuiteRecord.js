@@ -5,7 +5,7 @@
  * Record object.
  * @NApiVersion 2.1
  */
-define(["require", "exports", "./NetsuiteRecordSublist"], function (require, exports, NetsuiteRecordSublist) {
+define(["require", "exports", "N/error", "./NetsuiteRecordSublist"], function (require, exports, nsError, NetsuiteRecordSublist) {
     "use strict";
     /**
      * @class NetsuiteRecord
@@ -27,14 +27,37 @@ define(["require", "exports", "./NetsuiteRecordSublist"], function (require, exp
          * @type {string[]}
          */
         #sublists = [];
+        /**
+         * @private
+         * @type {number | null}
+         */
+        #ID = null;
         /** @type {record} Native SuiteScript record object */
         nsAPI;
         constructor(nsRecord) {
             this.nsAPI = nsRecord;
+            this.#ID = this.nsAPI.id;
             this.#fieldList = this.nsAPI.getFields();
             this.#sublists = this.nsAPI.getSublists();
             this.#buildFields();
             this.#buildSublists();
+        }
+        get ID() { return this.#ID; }
+        get fields() { return this.#fieldList; }
+        get sublists() { return this.#sublists; }
+        save() {
+            let savedRecID = null;
+            try {
+                savedRecID = this.nsAPI.save();
+                this.#ID = savedRecID;
+                return savedRecID;
+            }
+            catch (error) {
+                throw nsError.create({
+                    name: 'NETSUITE_RECORD_UTILITY_FAILED_SAVE',
+                    message: `This record failed to save: ${error}`
+                });
+            }
         }
         /**
          * @private
@@ -51,7 +74,7 @@ define(["require", "exports", "./NetsuiteRecordSublist"], function (require, exp
                         },
                         [`${fieldId}TEXT`]: {
                             get: () => this.nsAPI.getText({ fieldId: fieldId }),
-                            set: (value) => this.nsAPI.setText({ fieldId: fieldId, text: value }),
+                            set: (text) => this.nsAPI.setText({ fieldId: fieldId, text: text }),
                             enumerable: true
                         }
                     });

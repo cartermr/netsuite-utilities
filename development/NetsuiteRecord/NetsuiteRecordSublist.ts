@@ -2,7 +2,7 @@
  * @NApiVersion 2.1
  */
 
-import { Record as NsRecord, FieldValue } from 'N/record'
+import { Record as NsRecord } from 'N/record'
 
 class NetsuiteRecordSublist extends Array {
     [index: number]: any

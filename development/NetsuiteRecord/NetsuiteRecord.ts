@@ -6,7 +6,10 @@
  * @NApiVersion 2.1
  */
 
-import { Record as NsRecord } from 'N/record'
+import { Record as NsRecord, FieldValue } from 'N/record'
+import nsError = require('N/error')
+import log = require('N/log')
+
 import NetsuiteRecordSublist = require('./NetsuiteRecordSublist')
 
 /**
@@ -19,6 +22,8 @@ import NetsuiteRecordSublist = require('./NetsuiteRecordSublist')
  * @property {string[]} #sublists List of available sublists of the current record
  */
 class NetsuiteRecord {
+    [key: string]: any
+
     /**
      * @private
      * @type {string[]}
@@ -31,15 +36,40 @@ class NetsuiteRecord {
      */
     #sublists: string[] = []
 
+    /**
+     * @private
+     * @type {number | null}
+     */
+    #ID: number | null = null
+
     /** @type {record} Native SuiteScript record object */
     nsAPI: NsRecord
 
     constructor(nsRecord: NsRecord) {
         this.nsAPI = nsRecord
+        this.#ID = this.nsAPI.id
         this.#fieldList = this.nsAPI.getFields()
         this.#sublists = this.nsAPI.getSublists()
         this.#buildFields()
         this.#buildSublists()
+    }
+
+    get ID(): number | null { return this.#ID }
+    get fields(): string[] { return this.#fieldList }
+    get sublists(): string[] { return this.#sublists }
+
+    save(): number {
+        let savedRecID: number | null = null
+        try {
+            savedRecID = this.nsAPI.save()
+            this.#ID = savedRecID
+            return savedRecID
+        } catch (error) {
+            throw nsError.create({
+                name: 'NETSUITE_RECORD_UTILITY_FAILED_SAVE',
+                message: `This record failed to save: ${error}`
+            })
+        }
     }
 
     /**
@@ -51,13 +81,13 @@ class NetsuiteRecord {
             for (const fieldId of this.#fieldList) {
                 Object.defineProperties(this, {
                     [fieldId]: {
-                        get: () => this.nsAPI.getValue({fieldId: fieldId}),
-                        set: (value: any) => this.nsAPI.setValue({fieldId: fieldId, value: value}),
+                        get: (): FieldValue => this.nsAPI.getValue({fieldId: fieldId}),
+                        set: (value: string | number | null) => this.nsAPI.setValue({fieldId: fieldId, value: value}),
                         enumerable: true
                     },
                     [`${fieldId}TEXT`]: {
-                        get: () => this.nsAPI.getText({fieldId: fieldId}),
-                        set: (value: any) => this.nsAPI.setText({fieldId: fieldId, text: value}),
+                        get: (): FieldValue => this.nsAPI.getText({fieldId: fieldId}),
+                        set: (text: string) => this.nsAPI.setText({fieldId: fieldId, text: text}),
                         enumerable: true
                     }
                 })
