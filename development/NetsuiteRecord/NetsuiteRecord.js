@@ -32,6 +32,11 @@ define(["require", "exports", "N/error", "./NetsuiteRecordSublist"], function (r
          * @type {number | null}
          */
         #ID = null;
+        /**
+         * @private
+         * @type {boolean}
+         */
+        #isDynamic = false;
         /** @type {record} Native SuiteScript record object */
         nsAPI;
         constructor(nsRecord) {
@@ -45,6 +50,8 @@ define(["require", "exports", "N/error", "./NetsuiteRecordSublist"], function (r
         get ID() { return this.#ID; }
         get fields() { return this.#fieldList; }
         get sublists() { return this.#sublists; }
+        get isDynamic() { return this.#isDynamic; }
+        getField(fieldId) { return this.nsAPI.getField({ fieldId: fieldId }); }
         save() {
             let savedRecID = null;
             try {

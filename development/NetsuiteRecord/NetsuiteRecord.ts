@@ -6,7 +6,7 @@
  * @NApiVersion 2.1
  */
 
-import { Record as NsRecord, FieldValue } from 'N/record'
+import { Record as NsRecord, FieldValue, Field } from 'N/record'
 import nsError = require('N/error')
 import log = require('N/log')
 
@@ -42,6 +42,12 @@ class NetsuiteRecord {
      */
     #ID: number | null = null
 
+    /**
+     * @private
+     * @type {boolean}
+     */
+    #isDynamic: boolean = false
+
     /** @type {record} Native SuiteScript record object */
     nsAPI: NsRecord
 
@@ -57,6 +63,9 @@ class NetsuiteRecord {
     get ID(): number | null { return this.#ID }
     get fields(): string[] { return this.#fieldList }
     get sublists(): string[] { return this.#sublists }
+    get isDynamic(): boolean { return  this.#isDynamic }
+
+    getField(fieldId: string): Field { return this.nsAPI.getField({fieldId: fieldId}) }
 
     save(): number {
         let savedRecID: number | null = null
