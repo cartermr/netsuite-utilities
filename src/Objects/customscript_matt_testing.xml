@@ -1,0 +1,13 @@
+<usereventscript scriptid="customscript_matt_testing">
+    <name>Matt Testing Script</name>
+    <notifyowner>T</notifyowner>
+    <scriptfile>[/SuiteScript/testing-scripts/Matt_Testing_UE.js]</scriptfile>
+    <scriptdeployments>
+        <scriptdeployment scriptid="customdeploy_matt_testing">
+            <isdeployed>T</isdeployed>
+            <loglevel>DEBUG</loglevel>
+            <recordtype>SALESORDER</recordtype>
+            <status>TESTING</status>
+        </scriptdeployment>
+    </scriptdeployments>
+</usereventscript>
