@@ -1,4 +1,4 @@
 module.exports = {
-    defaultProjectFolder: "deployment",
+    defaultProjectFolder: "src",
     commands: {}
 };

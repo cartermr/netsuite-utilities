@@ -1,0 +1,19 @@
+<deploy>
+    <configuration>
+        <path>~/AccountConfiguration/*</path>
+    </configuration>
+    <files>
+        <path>~/FileCabinet/SuiteScripts/testing-scripts/Matt_Testing_UE.ts</path>
+        <path>~/FileCabinet/SuiteScripts/testing-scripts/Matt_Testing_UE.js</path>
+        <path>~/FileCabinet/SuiteScripts/script-utilities/NetsuiteRecord/NetsuiteRecord.ts</path>
+        <path>~/FileCabinet/SuiteScripts/script-utilities/NetsuiteRecord/NetsuiteRecord.js</path>
+        <path>~/FileCabinet/SuiteScripts/script-utilities/NetsuiteRecord/NetsuiteRecordSublist.ts</path>
+        <path>~/FileCabinet/SuiteScripts/script-utilities/NetsuiteRecord/NetsuiteRecordSublist.js</path>
+    </files>
+    <objects>
+        <path>~/Objects/customscript_matt_testing.xml</path>
+    </objects>
+    <translationimports>
+        <path>~/Translations/*</path>
+    </translationimports>
+</deploy>
